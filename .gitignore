@@ -1,4 +1,8 @@
 __pycache__/
 build/
+res/
 *.so
 *.c
+*.jpg
+
+!img/*.jpg
