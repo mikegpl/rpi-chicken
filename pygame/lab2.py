@@ -27,8 +27,8 @@ def transform_by_kernel(old_surface, new_surface, kernel):
 if __name__ == "__main__":
     source_surface = pgu.img_to_surface(path = IMG_PATH)
     target_surface = source_surface.copy()
-    kernel = bu.avg_kernel(size = 3)
-    
+    #kernel = bu.avg_kernel(size = 3)
+    kernel = bu.gaussian_kernel(size=3)
     transform_by_kernel(source_surface, target_surface, kernel)
     
     pgu.display_surface(target_surface)
