@@ -3,6 +3,6 @@ build/
 res/
 *.so
 *.c
-*.jpg
 
-!img/*.jpg
+
+
