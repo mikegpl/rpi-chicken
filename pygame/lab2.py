@@ -1,4 +1,5 @@
 import pyximport
+
 pyximport.install()
 
 from lab2 import pygame_utils as pgu
@@ -7,6 +8,7 @@ import pygame
 
 IMG_PATH = "img/cat.jpg"
 RES_PATH = "res.jpg"
+
 
 def transform_by_kernel(old_surface, new_surface, kernel):
     old_array = pygame.PixelArray(old_surface)
@@ -23,19 +25,19 @@ def transform_by_kernel(old_surface, new_surface, kernel):
 
     del old_array
     del new_array
-            
+
+
 if __name__ == "__main__":
-    source_surface = pgu.img_to_surface(path = IMG_PATH)
-    target_surface = source_surface.copy()
-    #kernel = bu.avg_kernel(size = 3)
-    kernel = bu.gaussian_kernel(size=3)
-    transform_by_kernel(source_surface, target_surface, kernel)
-    
-    pgu.display_surface(target_surface)
-    pgu.surface_to_img(target_surface, RES_PATH)
-    
-    
-    
+    # pgu.display_surface(
+    surface = pgu.img_to_surface(path=IMG_PATH)
+    for _ in range(1):
+        print(bu.to_grayscale(pygame.surfarray.pixels3d(surface))[0][0][1])
 
 
-    
+    # target_surface = source_surface.copy()
+    # # kernel = bu.avg_kernel(size = 3)
+    # kernel = bu.gaussian_kernel(size=3)
+    # transform_by_kernel(source_surface, target_surface, kernel)
+    #
+    # pgu.display_surface(target_surface)
+    # pgu.surface_to_img(target_surface, RES_PATH)
