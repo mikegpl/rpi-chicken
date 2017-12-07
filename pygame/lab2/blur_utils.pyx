@@ -11,10 +11,10 @@ def gaussian_kernel(size = 3, sigma = 1.0):
 
 # edge detection 
 def gx():
-    return np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
+    return np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]), 1
 
 def gy():
-    return np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
+    return np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]]), 1
 
 # using surface.pixels3d
 def to_grayscale(pixel_array_3d):
@@ -28,7 +28,7 @@ def mask_pixel(array, x, y, mask):
             pass
 
 # transform pixel
-cdef tuple ctransform_pixel(array, surface, int x, int y, int radius, int width, int height, kernel, double weight_sum):
+cdef tuple ctransform_pixel(array, int x, int y, int radius, int width, int height, kernel, double weight_sum):
     cdef int r_avg, g_avg, b_avg
     cdef int r, g, b, a
     cdef int multiplier
@@ -39,27 +39,13 @@ cdef tuple ctransform_pixel(array, surface, int x, int y, int radius, int width,
     for i in range(x - radius, x + radius + 1):
         for j in range(y - radius, y + radius + 1):
             if 0 <= i < width and 0 <= j < height:
-                r, g, b, a = surface.unmap_rgb(array[i, j])
+                r, g, b = array[i, j]
                 multiplier = kernel[i - x + radius][j - y + radius]
                 r_avg += r * multiplier
                 g_avg += g * multiplier
                 b_avg += b * multiplier
-    return int(r_avg / weight_sum), int(g_avg / weight_sum), int(b_avg / weight_sum)
-
-cdef int crgb(surface, int rgba):
-    cdef int r, g, b, a
-    r, g, b, a = surface.unmap_rgb(rgba)
-    return ((r & 255) << 16) | ((g & 255) << 8) | (b & 255)
-
-cdef int crgb2int(int r, int g, int b):
-    return ((r & 255) << 16) | ((g & 255) << 8) | (b & 255)
+    return r_avg / weight_sum, g_avg / weight_sum, b_avg / weight_sum
 
 # wrappers
-def transform_pixel(array, surface, x, y, radius, width, height, kernel, weight_sum):
-    return ctransform_pixel(array, surface, x, y, radius, width, height, kernel, weight_sum)
-
-def rgb(surface, rgba):
-    return crgb(surface, rgba)
-
-def rgb2int(r, g, b):
-    return crgb2int(r, g, b)
+def transform_pixel(array, x, y, radius, width, height, kernel, weight_sum):
+    return ctransform_pixel(array, x, y, radius, width, height, kernel, weight_sum)
