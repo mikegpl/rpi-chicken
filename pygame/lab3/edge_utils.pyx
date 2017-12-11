@@ -5,10 +5,10 @@ import pygame
 
 # edge detection
 def gx():
-    return np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]), 9
+    return np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]])
 
 def gy():
-    return np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]]), 9
+    return np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]])
 
 # using surface.pixels3d
 def to_greyscale(pixel_array_3d):
