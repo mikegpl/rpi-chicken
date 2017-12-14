@@ -8,7 +8,11 @@ from lab2 import blur_utils as bu
 from main2 import transform_by_kernel
 import numpy as np
 
-IMG_PATH = "img/cat.jpg"
+IMG_PATH = "img/sobeltest.png"
+
+# values determined experimentally
+UPPER_THRESHOLD = 45 ** 3
+LOWER_THRESHOLD = 40 ** 3
 
 
 def masked_surface_array(surf, kernel):
@@ -26,7 +30,7 @@ def sobel_operator(surface):
     gx = eu.gx()
     gy = eu.gy()
     # some not so random constant for better visibility
-    g_sum = 2
+    g_sum = 1.5
     radius = 1
 
     for x in range(0, width):
@@ -43,15 +47,36 @@ def better_canny(surf):
     width = surf.get_width()
     height = surf.get_height()
 
+    def pixel_value(x_pos, y_pos):
+        return np.sqrt(np.power(by_gx[x_pos][y_pos], 2) + np.power(by_gy[x_pos][y_pos], 2))
+
     for x in range(0, width):
         for y in range(0, height):
-            surf.set_at((x, y), np.sqrt(np.power(by_gx[x][y], 2) + np.power(by_gy[x][y], 2)))
-            # todo - final canny stuff goes here
+            value = pixel_value(x, y)
+            pixel_product = np.product(value)
+            if pixel_product > UPPER_THRESHOLD:
+                surf.set_at((x, y), value)
+            elif pixel_product < LOWER_THRESHOLD:
+                surf.set_at((x, y), (0, 0, 0))
+            else:
+                end_loop = False
+                for xx in [-1, 0, 1]:
+                    if end_loop:
+                        break
+                    for yy in [-1, 0, 1]:
+                        if 0 <= x + xx < width and 0 <= y + yy < height:
+                            adjacent_value = pixel_value(x + xx, y + yy)
+                            if np.product(adjacent_value) > UPPER_THRESHOLD:
+                                surf.set_at((x, y), adjacent_value)
+                                end_loop = True
+                                break
+                else:
+                    surf.set_at((x, y), (0, 0, 0))
 
 
 if __name__ == "__main__":
-    surface1 = pgu.img_to_surface(path=IMG_PATH)
-    surface1 = transform_by_kernel(surface1, bu.gaussian_kernel(size=6))
-    surfa = eu.surf_to_greyscale(surface1)
-    better_canny(surfa)
-    pgu.display_surface(surfa, 200, 200)
+    img_surface = pgu.img_to_surface(path=IMG_PATH)
+    img_surface = eu.surf_to_greyscale(img_surface)
+    img_surface = transform_by_kernel(img_surface, bu.gaussian_kernel(size=6))
+    better_canny(img_surface)
+    pgu.display_surface(img_surface, img_surface.get_width(), img_surface.get_height())
