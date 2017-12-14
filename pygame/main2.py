@@ -21,7 +21,7 @@ def transform_by_kernel(surf, kernel):
     new_array = pygame.surfarray.array3d(surf)
 
     kernel_array, kernel_sum = kernel
-    radius = len(kernel) // 2
+    radius = len(kernel_array) // 2
     width, height, _ = old_array.shape
 
     for x in range(0, width):

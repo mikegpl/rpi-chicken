@@ -1,9 +1,15 @@
 import numpy as np
 
 def avg_kernel(size = 3):
+    if size % 2 == 0:
+        print("WARNING: Kernel size is even, when it should be odd. Assuming size = size + 1")
+        size = size + 1
     return np.ones((size, size)), size ** 2
 
 def gaussian_kernel(size = 3, sigma = 1.0):
+    if size % 2 == 0:
+        print("WARNING: Kernel size is even, when it should be odd. Assuming size = size + 1")
+        size = size + 1
     ax = np.arange(-size // 2 + 1., size // 2 + 1.)
     xx, yy = np.meshgrid(ax, ax)
     kernel = 4.0 * np.exp(-(xx ** 2 + yy ** 2) / (2. * sigma ** 2))
@@ -22,12 +28,6 @@ cdef tuple ctransform_pixel(array, int x, int y, int radius, int width, int heig
         for j in range(y - radius, y + radius + 1):
             if 0 <= i < width and 0 <= j < height:
                 r, g, b = array[i, j]
-                # todo
-                """
-                lab2.blur_utils.ctransform_pixel
-                multiplier = kernel[i - x + radius][j - y + radius]
-                IndexError: index 1 is out of bounds for axis 0 with size 1
-                """
                 multiplier = kernel[i - x + radius][j - y + radius]
                 r_avg += r * multiplier
                 g_avg += g * multiplier

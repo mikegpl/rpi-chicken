@@ -19,7 +19,7 @@ def masked_surface_array(surf, kernel):
     return transform_by_kernel(surf, kernel)
 
 
-def sobel_operator(surface):
+def sobel_operator(surface, sobel_sum):
     """
     Returns two (width x height x 3) arrays containing RGB pixel values after convolution with Sobel masks.
     """
@@ -30,20 +30,22 @@ def sobel_operator(surface):
     gx = eu.gx()
     gy = eu.gy()
     # some not so random constant for better visibility
-    g_sum = 1.5
     radius = 1
 
     for x in range(0, width):
         for y in range(0, height):
-            by_gx[x][y] = bu.transform_pixel(old_array, x, y, radius, width, height, gx, g_sum)
-            by_gy[x][y] = bu.transform_pixel(old_array, x, y, radius, width, height, gy, g_sum)
+            by_gx[x][y] = bu.transform_pixel(old_array, x, y, radius, width, height, gx, sobel_sum)
+            by_gy[x][y] = bu.transform_pixel(old_array, x, y, radius, width, height, gy, sobel_sum)
 
     del old_array
     return by_gx, by_gy
 
 
-def better_canny(surf):
-    by_gx, by_gy = sobel_operator(surf)
+def better_canny(surf, sobel_sum=5.0):
+    """
+    Performs Canny edge detection on surface surf, change sobel_sum to adjust brightness
+    """
+    by_gx, by_gy = sobel_operator(surf, sobel_sum)
     width = surf.get_width()
     height = surf.get_height()
 
@@ -78,5 +80,5 @@ if __name__ == "__main__":
     img_surface = pgu.img_to_surface(path=IMG_PATH)
     img_surface = eu.surf_to_greyscale(img_surface)
     img_surface = transform_by_kernel(img_surface, bu.gaussian_kernel(size=6))
-    better_canny(img_surface)
+    better_canny(img_surface, 3.5)
     pgu.display_surface(img_surface, img_surface.get_width(), img_surface.get_height())
