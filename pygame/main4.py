@@ -24,8 +24,12 @@ def transform_by_kernel(image, kernel):
     return cv2.filter2D(image, -1, kernel)
 
 
-def canny_edge_detection(image, lower_threshold=210, upper_threshold=250):
-    return cv2.Canny(gaussian_blur(image_to_greyscale(image)), lower_threshold, upper_threshold)
+def canny_edge_detection(image, with_blur=True, lower_threshold=210, upper_threshold=250):
+    image = image_to_greyscale(image)
+    if with_blur:
+        image = gaussian_blur(image)
+
+    return cv2.Canny(image, lower_threshold, upper_threshold)
 
 
 if __name__ == "__main__":
