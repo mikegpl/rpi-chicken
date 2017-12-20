@@ -1,6 +1,6 @@
 # rpi-chicken
 ##
-Why did chicken cross the road?
+Why did the chicken cross the road?
 
 ## Table of contents
 
@@ -10,8 +10,11 @@ Why did chicken cross the road?
     - lab3 
         - Implementation of Canny edge detection algorithm (7.12.17)
         - Debugging, tuning for better performance (14.12.17)
-    - lab4 Benchmarking implemented methods (14.12.17)
 * OpenCV 
+    - lab4 OpenCV implementation of image processing implemented in Pygame.lab2-lab3 (14.12.17)
+* Comparison
+    - lab5 Benchmarking lab2-lab4 (14.12.17 - 21.12.17)
+    
     
 
 ## Requirements
@@ -43,6 +46,8 @@ Sources based on:
     https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html
     
     https://en.wikipedia.org/wiki/Canny_edge_detector#Process_of_Canny_edge_detection_algorithm
+    
+* lab4 - OpenCV docs and previous research done for lab2-lab3
     
     
     
