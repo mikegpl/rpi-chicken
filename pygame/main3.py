@@ -41,7 +41,7 @@ def sobel_operator(surface, sobel_sum):
     return by_gx, by_gy
 
 
-def better_canny(surf, sobel_sum=5.0):
+def canny_edge_detection(surf, sobel_sum=5.0):
     """
     Performs Canny edge detection on surface surf, change sobel_sum to adjust brightness
     """
@@ -57,7 +57,7 @@ def better_canny(surf, sobel_sum=5.0):
             value = pixel_value(x, y)
             pixel_product = np.product(value)
             if pixel_product > UPPER_THRESHOLD:
-                surf.set_at((x, y), value)
+                surf.set_at((x, y), np.minimum(np.array([255, 255, 255]), value))
             elif pixel_product < LOWER_THRESHOLD:
                 surf.set_at((x, y), (0, 0, 0))
             else:
@@ -69,7 +69,7 @@ def better_canny(surf, sobel_sum=5.0):
                         if 0 <= x + xx < width and 0 <= y + yy < height:
                             adjacent_value = pixel_value(x + xx, y + yy)
                             if np.product(adjacent_value) > UPPER_THRESHOLD:
-                                surf.set_at((x, y), adjacent_value)
+                                surf.set_at((x, y), np.minimum([255, 255, 255], adjacent_value))
                                 end_loop = True
                                 break
                 else:
@@ -79,6 +79,6 @@ def better_canny(surf, sobel_sum=5.0):
 if __name__ == "__main__":
     img_surface = pgu.img_to_surface(path=IMG_PATH)
     img_surface = eu.surf_to_greyscale(img_surface)
-    img_surface = transform_by_kernel(img_surface, bu.gaussian_kernel(size=6))
-    better_canny(img_surface, 3.5)
+    img_surface = transform_by_kernel(img_surface, bu.gaussian_kernel(size=1))
+    canny_edge_detection(img_surface, 3.5)
     pgu.display_surface(img_surface, img_surface.get_width(), img_surface.get_height())
