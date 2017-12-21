@@ -47,6 +47,13 @@ def measure_execution_time(fun, times=1):
     return measure_points
 
 
+def print_measurements(measurements):
+    for description in measurements:
+        print(description)
+        print("Avg {}\tstdev {}".format(np.mean(measurements[description]), np.std(measurements[description])))
+        print("###\n")
+
+
 def benchmark_lab2():
     """
     transform by kernel:
@@ -67,16 +74,7 @@ def benchmark_lab2():
             lambda: transform_by_kernel(source_img, GAUSSIAN[kernel_size]),
             MEASUREMENTS)
 
-    for key in data_points:
-        print(key)
-        points = list(zip(*data_points[key]))
-        sys_points = list(points[0])
-        usr_points = list(points[1])
-        print("Avg sys: {}\tStdev sys: {}\t\nAvg usr: {}\tStdev usr: {}".format(np.mean(sys_points),
-                                                                                np.std(sys_points),
-                                                                                np.mean(usr_points),
-                                                                                np.std(usr_points)))
-        print("###")
+    print_measurements(data_points)
 
 
 def benchmark_lab3():
@@ -115,16 +113,7 @@ def benchmark_lab3():
     canny_without_blur()
     canny_with_blur()
 
-    for key in data_points:
-        print(key)
-        points = list(zip(*data_points[key]))
-        sys_points = list(points[0])
-        usr_points = list(points[1])
-        print("Avg sys: {}\tStdev sys: {}\t\nAvg usr: {}\tStdev usr: {}".format(np.mean(sys_points),
-                                                                                np.std(sys_points),
-                                                                                np.mean(usr_points),
-                                                                                np.std(usr_points)))
-        print("###")
+    print_measurements(data_points)
 
 
 def benchmark_lab4():
@@ -177,16 +166,7 @@ def benchmark_lab4():
     data_points["CV Canny with 3x3 gaussian blur"] = measure_execution_time(lambda: m4.canny_edge_detection(img, True),
                                                                             MEASUREMENTS)
 
-    for key in data_points:
-        print(key)
-        points = list(zip(*data_points[key]))
-        sys_points = list(points[0])
-        usr_points = list(points[1])
-        print("Avg sys: {}\tStdev sys: {}\t\nAvg usr: {}\tStdev usr: {}".format(np.mean(sys_points),
-                                                                                np.std(sys_points),
-                                                                                np.mean(usr_points),
-                                                                                np.std(usr_points)))
-        print("---")
+    print_measurements(data_points)
 
 
 if __name__ == "__main__":
