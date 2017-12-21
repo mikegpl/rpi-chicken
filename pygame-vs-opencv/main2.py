@@ -37,5 +37,3 @@ if __name__ == "__main__":
     kernel = bu.avg_kernel(size=3)
     pgu.display_surface(transform_by_kernel(surface, kernel))
 
-    # surface = pygame.surfarray.make_surface(bu.to_grayscale(pygame.surfarray.pixels3d(surface)))
-    # pgu.display_surface(transform_by_kernel(surface, bu.gy()))
