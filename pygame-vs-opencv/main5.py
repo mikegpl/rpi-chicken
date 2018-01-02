@@ -114,11 +114,6 @@ def benchmark_lab4():
     canny with blur
     """
 
-    def stuff_n_times(stuff, n):
-        """Required to get reliable time measurements for exceptionally fast methods"""
-        for _ in range(n):
-            stuff()
-
     data_points = {}
     img = cv2.imread(IMG_PATH)
 
