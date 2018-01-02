@@ -3,6 +3,4 @@ build/
 res/
 *.so
 *.c
-
-
-
+.idea/
