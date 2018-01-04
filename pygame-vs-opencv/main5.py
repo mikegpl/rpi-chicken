@@ -37,8 +37,8 @@ def measure_execution_time(fun, times=1):
 
 def print_measurements(source, measurements):
     for description in measurements:
-        print("{},{},{},{}".format(source, description, np.mean(measurements[description]),
-                                   np.std(measurements[description])))
+        print("{0},{1},{2:.8f},{3:.8f}".format(source, description, np.mean(measurements[description]),
+                                               np.std(measurements[description])))
 
 
 def benchmark_lab2():
